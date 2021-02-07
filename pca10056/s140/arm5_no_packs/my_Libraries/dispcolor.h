@@ -55,5 +55,5 @@ int16_t dispcolor_DrawString_Bg(int16_t X, int16_t Y, uint8_t FontID, uint8_t *S
 int16_t dispcolor_printf(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColor, const char *args, ...);
 // Процедура выводит на дисплей форматированную строку. Возвращает ширину строки в пикселях
 int16_t dispcolor_printf_Bg(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColor, uint16_t BgColor, const char *args, ...);
-
+void  dispcolor_DrawFont(uint8_t x, uint8_t y, uint16_t color, const uint8_t mass[]);
 #endif

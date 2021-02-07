@@ -931,7 +931,6 @@ void set_vol(uint8_t vol)//UICR_REGOUT0_VOUT_3V3
 		}
 	}
 }
-
 int main(void)
 {
     bool erase_bonds;
@@ -990,8 +989,8 @@ int main(void)
 
 		for (uint32_t y = 0; y < imageHeight; y++)
 		{
-			memcpy(imageRow,imgtest+cursore, (imageWidth * 3 ));
-			cursore = cursore+(imageWidth * 3) ;
+			memcpy(imageRow,imgtest+cursore, (imageWidth * 3 + 3) & ~3);
+			cursore = cursore+((imageWidth * 3 + 3) & ~3) ;
 				
 			uint32_t rowIdx = 0;
 			for (uint32_t x = 0; x < imageWidth; x++)
@@ -1004,6 +1003,11 @@ int main(void)
 
 			dispcolor_DrawPartXY(0, imageHeight - y - 1, imageWidth, 1, PixBuff);
 		}
+		dispcolor_DrawFont(0,0, WHITE, number0);
+		dispcolor_DrawFont(0,50, WHITE, number1);
+		dispcolor_DrawFont(0,100, WHITE, number2);
+		dispcolor_DrawFont(0,150, WHITE, number3);
+
 		//for (int i=0;i<240*240;i++)
 		//{
 		//	ST7789FB[i] = RGB565(imgtest[imageOffset+i*3],imgtest[imageOffset+i*3+1],imgtest[imageOffset+i*3+2]);
@@ -1013,14 +1017,8 @@ int main(void)
 		//}
 		char* buffer = malloc(10);
 			
-		nrf_delay_ms(2500);
-		for (uint8_t i =0; i<5;i++)
-		{
-			sprintf(buffer,"%d",i);
-			dispcolor_printf(10, 10*i, FONTID_16F, RGB565(255, 255, 255), buffer);
-			ST7789GammaSet(i);
-			nrf_delay_ms(2500);
-		}
+		nrf_delay_ms(4000);
+	/*
 		ST7789FastClearScreen(ST7789FB8);
 			dispcolor_FillScreen(RGB565(255,0,0));
 			nrf_delay_ms(600);
@@ -1032,7 +1030,7 @@ int main(void)
 		ST7789FastClearScreen(ST7789FB8);
 			dispcolor_FillScreen(RGB565(0,0,255));
 			nrf_delay_ms(600);
-			
+			*/
 		nrf_delay_ms(200);
 		dispcolor_DrawCircle(120, 140, 50, RED);
 		dispcolor_printf(10, 200, FONTID_16F, RGB565(255, 255, 255), "Watch_M1");

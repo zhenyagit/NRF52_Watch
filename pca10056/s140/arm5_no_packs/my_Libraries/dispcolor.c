@@ -247,6 +247,23 @@ void dispcolor_DrawCircleFilled(int16_t x0, int16_t y0, int16_t radius, uint16_t
 //==============================================================================
 
 
+void  dispcolor_DrawFont(uint8_t x, uint8_t y, uint16_t color,const uint8_t mass[])
+{
+	uint16_t PixBuff[240];
+	uint8_t r = color>>8 & 0xF8;
+	uint8_t g = color>>3 & 0xFC;
+	uint8_t b = color<<3 & 0xF8;
+	for (int i=0;i<mass[1];i++)
+	{
+		for (int j=0; j<mass[0];j++)
+			PixBuff[j] = RGB565(mass[2+i*mass[0]+j]*r/255,mass[2+i*mass[0]+j]*g/255,mass[2+i*mass[0]+j]*b/255);
+		dispcolor_DrawPartXY(x, y+i, mass[0], 1, PixBuff);
+	}
+}
+		
+			
+	
+
 //==============================================================================
 // Процедура заполнения прямоугольной области из буфера (порядок заполнения сектора Y, X
 //==============================================================================
