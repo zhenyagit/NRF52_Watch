@@ -51,13 +51,9 @@
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\fds\fds.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\log\nrf_log.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\experimental_section_vars\nrf_section.h
-.\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_ctrl.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_ctrl_internal.h
 .\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_backend_interface.h
-.\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\memobj\nrf_memobj.h
-.\_build\peer_data_storage.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\_build\peer_data_storage.o: ..\..\..\..\..\..\components\libraries\balloc\nrf_balloc.h

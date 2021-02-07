@@ -36,13 +36,9 @@
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\util\app_error_weak.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\log\nrf_log.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\experimental_section_vars\nrf_section.h
-.\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_ctrl.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_ctrl_internal.h
 .\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_backend_interface.h
-.\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\memobj\nrf_memobj.h
-.\_build\hardfault_implementation.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\_build\hardfault_implementation.o: ..\..\..\..\..\..\components\libraries\balloc\nrf_balloc.h

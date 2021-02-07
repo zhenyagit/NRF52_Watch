@@ -59,14 +59,10 @@
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\util\sdk_os.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\util\sdk_macros.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\experimental_section_vars\nrf_section.h
-.\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_ctrl.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_ctrl_internal.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_backend_interface.h
-.\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\memobj\nrf_memobj.h
-.\_build\st7789lib.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\balloc\nrf_balloc.h
 .\_build\st7789lib.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_default_backends.h

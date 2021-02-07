@@ -57,7 +57,6 @@
 .\_build\app_button.o: ..\..\..\..\..\..\modules\nrfx\hal/nrf_gpiote.h
 .\_build\app_button.o: ..\..\..\..\..\..\components\libraries\log\nrf_log.h
 .\_build\app_button.o: ..\..\..\..\..\..\components\libraries\experimental_section_vars\nrf_section.h
-.\_build\app_button.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\app_button.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\app_button.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\app_button.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h

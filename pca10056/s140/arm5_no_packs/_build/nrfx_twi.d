@@ -56,7 +56,6 @@
 .\_build\nrfx_twi.o: ..\..\..\..\..\..\components\libraries\util\sdk_os.h
 .\_build\nrfx_twi.o: ..\..\..\..\..\..\components\libraries\util\sdk_macros.h
 .\_build\nrfx_twi.o: ..\..\..\..\..\..\components\libraries\experimental_section_vars\nrf_section.h
-.\_build\nrfx_twi.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\nrfx_twi.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\nrfx_twi.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\nrfx_twi.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h

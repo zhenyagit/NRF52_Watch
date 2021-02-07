@@ -11,6 +11,7 @@ void ST7789SetDrvSpi(nrfx_spim_t *_spiips,uint8_t * _FBuffer8,volatile bool *_sp
 	spi_xferips = *_spi_xfer;
 	nrf_gpio_cfg_output(DCpin);
 	nrf_gpio_cfg_output(RSpin);
+	nrf_gpio_cfg_output(BLpin);
 }
 void ST7789SendCommand(uint8_t Cmd){
   nrf_gpio_pin_clear(DCpin);
@@ -54,6 +55,14 @@ void ST7789SleepMode(uint8_t Mode){
 void ST7789ColorModeSet(uint8_t ColorMode){
   ST7789SendCommand(0x3a);
   ST7789SendData(ColorMode & 0x77);  
+}
+void ST7789GammaSet(uint8_t CurveNum)
+{
+  if (CurveNum > 4)
+    return;
+  
+  ST7789SendCommand(0x26);
+  ST7789SendData(1 << (CurveNum - 1));  
 }
 void ST7789MemAccessModeSet(uint8_t Rotation, uint8_t VertMirror, uint8_t HorizMirror, uint8_t IsBGR){
   uint8_t Value;
@@ -124,8 +133,8 @@ void ST7789RamWrite(uint16_t *_FBuffer, uint16_t Len){
   while (Len--)
   {
 		uint8_t array[2];
-    array[0]= *_FBuffer & 0xff;
-		array[1]=(*_FBuffer >> 8);
+    array[1]=(uint8_t)(*_FBuffer);
+		array[0]=(uint8_t)(*_FBuffer >> 8);
 		nrfx_spim_xfer_desc_t xfer_desc = NRFX_SPIM_SINGLE_XFER(&array, 2, NULL, 0);
 		nrfx_spim_xfer(&spiips, &xfer_desc, 0);
 	}  
@@ -186,7 +195,7 @@ void ST7789FillScreen(uint16_t color){
   ST7789FillRect(0, 0,  240, 240, color);
 }
 void ST7789SetBL(uint8_t Value){
-	nrf_gpio_pin_set(13);
+	nrf_gpio_pin_clear(BLpin);
   //BackLight 
 }
 void ST7789DisplayPower(uint8_t On){
@@ -199,7 +208,7 @@ void ST7789Init(){
   int ST7789_Width = 240;
   int ST7789_Height = 240;
  
-  nrf_delay_ms(100);
+  nrf_delay_ms(40);
   
   ST7789HardReset();
 
@@ -213,7 +222,7 @@ void ST7789Init(){
   nrf_delay_ms(10);
 
   ST7789InversionMode(1);
-
+	ST7789GammaSet(2);
   nrf_delay_ms(10);
 
   ST7789FillScreen(0x0000);

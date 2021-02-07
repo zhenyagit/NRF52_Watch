@@ -29,7 +29,6 @@
 .\_build\nrf_fstorage.o: ..\..\..\..\..\..\components\libraries\util\app_util.h
 .\_build\nrf_fstorage.o: ..\..\..\..\..\..\components\softdevice\s140\headers\nrf52\nrf_mbr.h
 .\_build\nrf_fstorage.o: ..\..\..\..\..\..\components\softdevice\s140\headers\nrf_svc.h
-.\_build\nrf_fstorage.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\nrf_fstorage.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\nrf_fstorage.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\nrf_fstorage.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h

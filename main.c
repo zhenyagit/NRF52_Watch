@@ -38,6 +38,8 @@
 #include "nrf_log_default_backends.h"
 #include "nrfx_spim.h"
 
+#include "test.h"
+
 #include "nrf_drv_spi.h"
 #define DEVICE_NAME                         "ZHD_Watch_M1"                            /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME                   "ZHD"                   /**< Manufacturer. Will be passed to Device Information Service. */
@@ -795,9 +797,9 @@ static void advertising_init(void)
 
 void spi_init (void){
 	nrfx_spim_config_t spi_config = NRFX_SPIM_DEFAULT_CONFIG;
-	spi_config.ss_pin   = 26;
-	spi_config.mosi_pin = 32;
-	spi_config.sck_pin  = 34;
+	spi_config.ss_pin   = 31;
+	spi_config.mosi_pin = 2;
+	spi_config.sck_pin  = 29;
 	spi_config.use_hw_ss= true;
 	spi_config.frequency = SPIM_FREQUENCY_FREQUENCY_M32;  
 	spi_config.bit_order      = NRF_SPIM_BIT_ORDER_MSB_FIRST;
@@ -895,10 +897,47 @@ static void clock_init(void)
 
 /**@brief Function for application main entry.
  */
+static void gpio_output_voltage_setup(void)
+{
+    // Configure UICR_REGOUT0 register only if it is set to default value.
+    if ((NRF_UICR->REGOUT0 & UICR_REGOUT0_VOUT_Msk) ==
+        (UICR_REGOUT0_VOUT_DEFAULT << UICR_REGOUT0_VOUT_Pos))
+    {
+        NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen;
+        while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+
+        NRF_UICR->REGOUT0 = (NRF_UICR->REGOUT0 & ~((uint32_t)UICR_REGOUT0_VOUT_Msk)) |
+                            (UICR_REGOUT0_VOUT_2V4 << UICR_REGOUT0_VOUT_Pos);
+
+        NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
+        while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+
+        // System reset is needed to update UICR registers.
+        NVIC_SystemReset();
+    }
+}
+void set_vol(uint8_t vol)//UICR_REGOUT0_VOUT_3V3
+{
+	if (NRF_POWER->MAINREGSTATUS & (POWER_MAINREGSTATUS_MAINREGSTATUS_High << POWER_MAINREGSTATUS_MAINREGSTATUS_Pos))
+	{
+	// Configure UICR_REGOUT0 register only if it is set to default value.
+		if ((NRF_UICR->REGOUT0 & UICR_REGOUT0_VOUT_Msk) ==
+		(UICR_REGOUT0_VOUT_DEFAULT << UICR_REGOUT0_VOUT_Pos))
+		{
+		NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen;
+		while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+			// System reset is needed to update UICR registers.
+				NVIC_SystemReset();
+		}
+	}
+}
+
 int main(void)
 {
     bool erase_bonds;
-
+		nrf_gpio_cfg_output(PWpin);
+		nrf_gpio_pin_clear(PWpin);
+		nrf_delay_ms(700);
     // Initialize modules.
     log_init();
     clock_init();
@@ -919,13 +958,15 @@ int main(void)
 
     // Configure and initialize the BLE stack.
     ble_stack_init();
-
+		//sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
+		//sd_power_dcdc0_mode_set(NRF_POWER_DCDC_ENABLE);
+		//set_vol(UICR_REGOUT0_VOUT_3V3);
     // Initialize modules.
     timers_init();
     buttons_leds_init(&erase_bonds);
     gap_params_init();
     gatt_init();
-    advertising_init();
+    advertising_init();	
     services_init();
     sensor_simulator_init();
     conn_params_init();
@@ -936,19 +977,71 @@ int main(void)
 		uint16_t color;
 		color = RGB565(0, 0, 255);
 		dispcolor_FillScreen(color);	
-		for (int i=0;i<240*240;i++)
+		uint32_t imageOffset = imgtest[10] | (imgtest[11] << 8) | (imgtest[12] << 16) | (imgtest[13] << 24);
+		uint32_t imageWidth  = imgtest[18] | (imgtest[19] << 8) | (imgtest[20] << 16) | (imgtest[21] << 24);
+		uint32_t imageHeight = imgtest[22] | (imgtest[23] << 8) | (imgtest[24] << 16) | (imgtest[25] << 24);
+		uint16_t imagePlanes = imgtest[26] | (imgtest[27] << 8);
+
+		uint16_t imageBitsPerPixel = imgtest[28] | (imgtest[29] << 8);
+		uint32_t imageCompression  = imgtest[30] | (imgtest[31] << 8) | (imgtest[32] << 16) | (imgtest[33] << 24);
+		int cursore=imageOffset;
+		uint8_t imageRow[(240 * 3 + 3) & ~3];
+		uint16_t PixBuff[240];
+
+		for (uint32_t y = 0; y < imageHeight; y++)
 		{
-			if (i%240==0) ST7789FB[i] = RGB565(250, 250, 250);
-			else ST7789FB[i] = RGB565(120, 0, 2);
+			memcpy(imageRow,imgtest+cursore, (imageWidth * 3 ));
+			cursore = cursore+(imageWidth * 3) ;
+				
+			uint32_t rowIdx = 0;
+			for (uint32_t x = 0; x < imageWidth; x++)
+			{
+				uint8_t b = imageRow[rowIdx++];
+				uint8_t g = imageRow[rowIdx++];
+				uint8_t r = imageRow[rowIdx++];
+				PixBuff[x] = RGB565(r, g, b);
+			}
+
+			dispcolor_DrawPartXY(0, imageHeight - y - 1, imageWidth, 1, PixBuff);
 		}
-		nrf_delay_ms(700);
-		for (int o=0;o<2;o++){
-			ST7789FastClearScreen(ST7789FB8);
-			ST7789FastSendBuffer(ST7789FB,ST7789FB8);
+		//for (int i=0;i<240*240;i++)
+		//{
+		//	ST7789FB[i] = RGB565(imgtest[imageOffset+i*3],imgtest[imageOffset+i*3+1],imgtest[imageOffset+i*3+2]);
+			//if (i%240==0) ST7789FB[i] = RGB565(250, 250, 250);
+			//else ST7789FB[i] = RGB565(120, 0, 2);
+			
+		//}
+		char* buffer = malloc(10);
+			
+		nrf_delay_ms(2500);
+		for (uint8_t i =0; i<5;i++)
+		{
+			sprintf(buffer,"%d",i);
+			dispcolor_printf(10, 10*i, FONTID_16F, RGB565(255, 255, 255), buffer);
+			ST7789GammaSet(i);
+			nrf_delay_ms(2500);
 		}
+		ST7789FastClearScreen(ST7789FB8);
+			dispcolor_FillScreen(RGB565(255,0,0));
+			nrf_delay_ms(600);
+			
+		ST7789FastClearScreen(ST7789FB8);
+			dispcolor_FillScreen(RGB565(0,255,0));
+			nrf_delay_ms(600);
+			
+		ST7789FastClearScreen(ST7789FB8);
+			dispcolor_FillScreen(RGB565(0,0,255));
+			nrf_delay_ms(600);
+			
 		nrf_delay_ms(200);
-		dispcolor_DrawCircle(120, 140, 50, YELLOW);
-		dispcolor_printf(10, 200, FONTID_16F, RGB565(255, 255, 255), "I love Sandaara");
+		dispcolor_DrawCircle(120, 140, 50, RED);
+		dispcolor_printf(10, 200, FONTID_16F, RGB565(255, 255, 255), "Watch_M1");
+		sprintf(buffer,"%d",sizeof(imgtest));
+		dispcolor_printf(10,150, FONTID_16F,RGB565(255,255,255),buffer);
+		
+		
+
+		
     // Create a FreeRTOS task for the BLE stack.
     // The task will run advertising_start() before entering its loop.
     nrf_sdh_freertos_init(advertising_start, &erase_bonds);

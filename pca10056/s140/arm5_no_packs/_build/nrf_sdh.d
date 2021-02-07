@@ -39,7 +39,6 @@
 .\_build\nrf_sdh.o: ..\..\..\..\..\..\components\libraries\util\app_error_weak.h
 .\_build\nrf_sdh.o: ..\..\..\..\..\..\components\libraries\util\app_util_platform.h
 .\_build\nrf_sdh.o: ..\..\..\..\..\..\components\libraries\log\nrf_log.h
-.\_build\nrf_sdh.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\nrf_sdh.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\nrf_sdh.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\nrf_sdh.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h

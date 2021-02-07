@@ -6,8 +6,10 @@
 #include "nrf_drv_spi.h"
 
 #include "app_error.h"
-#define DCpin 43
-#define RSpin 20
+#define DCpin 30
+#define RSpin 45
+#define BLpin 34
+#define PWpin 28
 #define RGB565(r, g, b)         (((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3))
 extern uint8_t * FBufferTemp8;
 static  nrfx_spim_t spiips;  /**< SPI instance. */
@@ -36,5 +38,5 @@ void ST7789FastSendBuffer(uint16_t *_FBuffer,uint8_t *_FBuffer8);
 void ST7789DrawPixel(int16_t x, int16_t y, uint16_t color);
 void ST7789DrawPartYX(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t *pBuff);
 void ST7789DrawPartXY(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t *pBuff);
-
+void ST7789GammaSet(uint8_t CurveNum);
 #endif 

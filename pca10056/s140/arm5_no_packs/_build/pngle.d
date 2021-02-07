@@ -1,0 +1,9 @@
+.\_build\pngle.o: my_Libraries\pngle.c
+.\_build\pngle.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\_build\pngle.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\_build\pngle.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\_build\pngle.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\_build\pngle.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\_build\pngle.o: my_Libraries\miniz.h
+.\_build\pngle.o: my_Libraries\miniz.c
+.\_build\pngle.o: my_Libraries\pngle.h

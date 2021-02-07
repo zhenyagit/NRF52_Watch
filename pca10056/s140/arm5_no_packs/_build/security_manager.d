@@ -54,13 +54,10 @@
 .\_build\security_manager.o: ..\..\..\..\..\..\components\ble\peer_manager\id_manager.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\log\nrf_log.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\experimental_section_vars\nrf_section.h
-.\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_ctrl.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_ctrl_internal.h
 .\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_backend_interface.h
-.\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\memobj\nrf_memobj.h
-.\_build\security_manager.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\balloc\nrf_balloc.h
+.\_build\security_manager.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h

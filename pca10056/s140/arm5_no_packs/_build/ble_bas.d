@@ -44,7 +44,6 @@
 .\_build\ble_bas.o: ..\..\..\..\..\..\components\ble\common\ble_conn_state.h
 .\_build\ble_bas.o: ..\..\..\..\..\..\components\libraries\atomic\nrf_atomic.h
 .\_build\ble_bas.o: ..\..\..\..\..\..\components\libraries\log\nrf_log.h
-.\_build\ble_bas.o: ..\..\..\..\..\..\components\libraries\strerror\nrf_strerror.h
 .\_build\ble_bas.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_internal.h
 .\_build\ble_bas.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_instance.h
 .\_build\ble_bas.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_types.h
