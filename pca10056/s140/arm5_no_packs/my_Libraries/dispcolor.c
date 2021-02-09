@@ -247,7 +247,7 @@ void dispcolor_DrawCircleFilled(int16_t x0, int16_t y0, int16_t radius, uint16_t
 //==============================================================================
 
 
-void  dispcolor_DrawFont(uint8_t x, uint8_t y, uint16_t color,const uint8_t mass[])
+void dispcolor_DrawFont(uint8_t x, uint8_t y, uint16_t color,const uint8_t mass[])
 {
 	uint16_t PixBuff[240];
 	uint8_t r = color>>8 & 0xF8;
@@ -259,11 +259,30 @@ void  dispcolor_DrawFont(uint8_t x, uint8_t y, uint16_t color,const uint8_t mass
 			PixBuff[j] = RGB565(mass[2+i*mass[0]+j]*r/255,mass[2+i*mass[0]+j]*g/255,mass[2+i*mass[0]+j]*b/255);
 		dispcolor_DrawPartXY(x, y+i, mass[0], 1, PixBuff);
 	}
-}
-		
-			
+}	
+void dispcolor_DrawFontInBuff(uint8_t x, uint8_t y, uint16_t color,uint8_t number, uint16_t * FrameBuffer)
+{
 	
-
+	uint8_t r = color>>8 & 0xF8;
+	uint8_t g = color>>3 & 0xFC;
+	uint8_t b = color<<3 & 0xF8;
+	uint8_t width = numbers[number][0];
+	uint8_t heigth = numbers[number][1];	
+	for (int i=0;i<heigth;i++)
+	{
+		for (int j=0; j<width;j++)
+		{
+			if (j+x<240)
+				if (i+y<240)
+					FrameBuffer[i*240+j+x+y*240] = RGB565(numbers[number][2+i*width+j]*r/255,numbers[number][2+i*width+j]*g/255,numbers[number][2+i*width+j]*b/255);
+		}
+	}
+}
+void dispcolor_DrawMain()
+{
+	dispcolor_DrawFont(0,100, WHITE, number7);
+	
+}
 //==============================================================================
 // Процедура заполнения прямоугольной области из буфера (порядок заполнения сектора Y, X
 //==============================================================================
@@ -401,7 +420,35 @@ static int16_t dispcolor_DrawString_General(int16_t X, int16_t Y, uint8_t FontID
 }
 //==============================================================================
 
+void dispcolor_DrawBMP(uint8_t x, uint8_t y, const uint8_t * img, uint16_t *ST7789FB)
+{
+	uint32_t imageOffset = img[10] | (img[11] << 8) | (img[12] << 16) | (img[13] << 24);
+	uint32_t imageWidth  = img[18] | (img[19] << 8) | (img[20] << 16) | (img[21] << 24);
+	uint32_t imageHeight = img[22] | (img[23] << 8) | (img[24] << 16) | (img[25] << 24);
+	uint16_t imagePlanes = img[26] | (img[27] << 8);
 
+	uint16_t imageBitsPerPixel = img[28] | (img[29] << 8);
+	uint32_t imageCompression  = img[30] | (img[31] << 8) | (img[32] << 16) | (img[33] << 24);
+	int cursore=imageOffset;
+	uint8_t imageRow[(240 * 3 + 3) & ~3];
+	uint16_t PixBuff[240];
+
+	for (uint32_t i = y; (i < imageHeight)&&(i < 240); i++)
+	{
+		memcpy(imageRow,img+cursore, (imageWidth * 3 + 3) & ~3);
+		cursore = cursore+((imageWidth * 3 + 3) & ~3) ;
+			
+		uint32_t rowIdx = 0;
+		for (uint32_t j = 0; (j < imageWidth)&&(j < 240); j++)
+		{
+			uint8_t b = imageRow[rowIdx++];
+			uint8_t g = imageRow[rowIdx++];
+			uint8_t r = imageRow[rowIdx++];
+			PixBuff[x] = RGB565(r, g, b);
+			ST7789FB[i*240+j] = RGB565(r, g, b);
+		}
+	}
+}
 //==============================================================================
 // Функция вывода текста из строки Str на дисплей
 //==============================================================================

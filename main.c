@@ -38,7 +38,7 @@
 #include "nrf_log_default_backends.h"
 #include "nrfx_spim.h"
 
-#include "test.h"
+//#include "test.h"
 
 #include "nrf_drv_spi.h"
 #define DEVICE_NAME                         "ZHD_Watch_M1"                            /**< Name of device. Will be included in the advertising data. */
@@ -971,42 +971,18 @@ int main(void)
     conn_params_init();
     peer_manager_init();
     application_timers_start();
-		ST7789SetDrvSpi(&m_spi, ST7789FB8 ,&spi_xfer_done);
+		ST7789SetDrvSpi(&m_spi, &ST7789FB8[0] ,&spi_xfer_done);
 		ST7789Init();
 		uint16_t color;
 		color = RGB565(0, 0, 255);
 		dispcolor_FillScreen(color);	
-		uint32_t imageOffset = imgtest[10] | (imgtest[11] << 8) | (imgtest[12] << 16) | (imgtest[13] << 24);
-		uint32_t imageWidth  = imgtest[18] | (imgtest[19] << 8) | (imgtest[20] << 16) | (imgtest[21] << 24);
-		uint32_t imageHeight = imgtest[22] | (imgtest[23] << 8) | (imgtest[24] << 16) | (imgtest[25] << 24);
-		uint16_t imagePlanes = imgtest[26] | (imgtest[27] << 8);
-
-		uint16_t imageBitsPerPixel = imgtest[28] | (imgtest[29] << 8);
-		uint32_t imageCompression  = imgtest[30] | (imgtest[31] << 8) | (imgtest[32] << 16) | (imgtest[33] << 24);
-		int cursore=imageOffset;
-		uint8_t imageRow[(240 * 3 + 3) & ~3];
-		uint16_t PixBuff[240];
-
-		for (uint32_t y = 0; y < imageHeight; y++)
-		{
-			memcpy(imageRow,imgtest+cursore, (imageWidth * 3 + 3) & ~3);
-			cursore = cursore+((imageWidth * 3 + 3) & ~3) ;
-				
-			uint32_t rowIdx = 0;
-			for (uint32_t x = 0; x < imageWidth; x++)
-			{
-				uint8_t b = imageRow[rowIdx++];
-				uint8_t g = imageRow[rowIdx++];
-				uint8_t r = imageRow[rowIdx++];
-				PixBuff[x] = RGB565(r, g, b);
-			}
-
-			dispcolor_DrawPartXY(0, imageHeight - y - 1, imageWidth, 1, PixBuff);
-		}
-		dispcolor_DrawFont(0,0, WHITE, number0);
-		dispcolor_DrawFont(0,50, WHITE, number1);
-		dispcolor_DrawFont(0,100, WHITE, number2);
-		dispcolor_DrawFont(0,150, WHITE, number3);
+		dispcolor_DrawBMP(0,0,IMG_flower,ST7789FB);
+		
+		ST7789FastSendBuffer(ST7789FB,ST7789FB8);
+		//dispcolor_DrawFont(0,0, WHITE,  *numbersfontmain[0]);
+		//dispcolor_DrawFont(0,50, WHITE, *numbersfontmain[6]);
+		dispcolor_DrawFont(0,100, WHITE, number7);
+		dispcolor_DrawFont(0,150, WHITE, number8);
 
 		//for (int i=0;i<240*240;i++)
 		//{
@@ -1018,11 +994,21 @@ int main(void)
 		char* buffer = malloc(10);
 			
 		nrf_delay_ms(4000);
-	/*
+	
 		ST7789FastClearScreen(ST7789FB8);
-			dispcolor_FillScreen(RGB565(255,0,0));
-			nrf_delay_ms(600);
+		dispcolor_FillScreen(RGB565(255,0,0));
+		nrf_delay_ms(600);
+		for (int i=0;i<150;i++)
+		{
+			//dispcolor_DrawBMP(0,0,IMG_flower,ST7789FB); //+6 sec
+			memset(ST7789FB, 0, 240*240*2);
+			dispcolor_DrawFontInBuff(i,i, WHITE, 2,ST7789FB);
+			ST7789FastSendBuffer(ST7789FB,ST7789FB8);//6sec
 			
+		}
+		nrf_delay_ms(4000);
+	
+		/*	
 		ST7789FastClearScreen(ST7789FB8);
 			dispcolor_FillScreen(RGB565(0,255,0));
 			nrf_delay_ms(600);
@@ -1032,10 +1018,10 @@ int main(void)
 			nrf_delay_ms(600);
 			*/
 		nrf_delay_ms(200);
-		dispcolor_DrawCircle(120, 140, 50, RED);
-		dispcolor_printf(10, 200, FONTID_16F, RGB565(255, 255, 255), "Watch_M1");
-		sprintf(buffer,"%d",sizeof(imgtest));
-		dispcolor_printf(10,150, FONTID_16F,RGB565(255,255,255),buffer);
+		//dispcolor_DrawCircle(120, 140, 50, RED);
+		//dispcolor_printf(10, 200, FONTID_16F, RGB565(255, 255, 255), "Watch_M1");
+		//sprintf(buffer,"%d",sizeof(IMG_flower));
+		//dispcolor_printf(10,150, FONTID_16F,RGB565(255,255,255),buffer);
 		
 		
 

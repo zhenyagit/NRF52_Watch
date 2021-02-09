@@ -53,6 +53,7 @@
 .\_build\dispcolor.o: ..\..\..\..\..\..\modules\nrfx\hal/nrf_spim.h
 .\_build\dispcolor.o: ..\..\..\..\..\..\modules\nrfx\drivers\include\nrfx_spi.h
 .\_build\dispcolor.o: ..\..\..\..\..\..\modules\nrfx\hal/nrf_spi.h
+.\_build\dispcolor.o: .\my_Images\imgs.h
 .\_build\dispcolor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\_build\dispcolor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\_build\dispcolor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

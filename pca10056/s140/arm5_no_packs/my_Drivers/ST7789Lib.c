@@ -9,6 +9,7 @@ uint8_t * FBufferTemp8;
 void ST7789SetDrvSpi(nrfx_spim_t *_spiips,uint8_t * _FBuffer8,volatile bool *_spi_xfer){
 	spiips = *_spiips;
 	spi_xferips = *_spi_xfer;
+	FBufferTemp8 = _FBuffer8;
 	nrf_gpio_cfg_output(DCpin);
 	nrf_gpio_cfg_output(RSpin);
 	nrf_gpio_cfg_output(BLpin);
@@ -129,7 +130,8 @@ static void ST7789RowSet(uint16_t RowStart, uint16_t RowEnd){
   ST7789SendData(RowEnd >> 8);  
   ST7789SendData(RowEnd & 0xFF);  
 }
-void ST7789RamWrite(uint16_t *_FBuffer, uint16_t Len){
+void ST7789RamWrite(const uint16_t *_FBuffer, uint16_t Len){
+
   while (Len--)
   {
 		uint8_t array[2];
@@ -137,7 +139,8 @@ void ST7789RamWrite(uint16_t *_FBuffer, uint16_t Len){
 		array[0]=(uint8_t)(*_FBuffer >> 8);
 		nrfx_spim_xfer_desc_t xfer_desc = NRFX_SPIM_SINGLE_XFER(&array, 2, NULL, 0);
 		nrfx_spim_xfer(&spiips, &xfer_desc, 0);
-	}  
+	} 
+
 }
 static void ST7789ColumnSet(uint16_t ColumnStart, uint16_t ColumnEnd){
   if (ColumnStart > ColumnEnd)
@@ -249,20 +252,24 @@ void ST7789FastSendBuffer(uint16_t *_FBuffer,uint8_t *_FBuffer8){
 	uint32_t len = 240*240*2;
   uint32_t pos = 0, stp = 0;
 	nrfx_err_t err_code;
-  nrfx_spim_xfer_desc_t xfer_desc1;// = NRFX_SPIM_XFER_TX(_FBuffer, 240*240);
+  nrfx_spim_xfer_desc_t xfer_desc1 = NRFX_SPIM_SINGLE_XFER(_FBuffer8, 240*120,NULL,0);// = NRFX_SPIM_XFER_TX(_FBuffer, 240*240);
 	for (pos = 0; pos < len; pos += stp)
 	{
 		stp = MIN((len - pos), 65534);
 		xfer_desc1.tx_length = stp;
 		for (int i=0;i<stp/2;i++)
 		{
-			_FBuffer8[i*2]=   _FBuffer[i+pos/2] & 0xff;
-			_FBuffer8[i*2+1]=(_FBuffer[i+pos/2] >> 8);
+			_FBuffer8[i*2+1]=   _FBuffer[i+pos/2] ;
+			_FBuffer8[i*2]=     (_FBuffer[i+pos/2] >> 8);
 		
 		}
+		//nrfx_spim_xfer_desc_t xfer_desc = NRFX_SPIM_SINGLE_XFER(_FBuffer8, 240*120,NULL,0);
+		//xfer_desc.tx_length = stp;
 		xfer_desc1.p_tx_buffer = _FBuffer8;
-		err_code = nrfx_spim_xfer_dcx(&spiips, &xfer_desc1, NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER, 0);
-		APP_ERROR_CHECK(err_code);
+		nrfx_spim_xfer(&spiips, &xfer_desc1, 0);
+		//xfer_desc1.p_tx_buffer = _FBuffer8;
+		//err_code = nrfx_spim_xfer_dcx(&spiips, &xfer_desc1, NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER, 0);
+		//APP_ERROR_CHECK(err_code);
 	}
 	// nrfx_spim_xfer(&spiips, &xfer_desc1, 0);
 	// APP_ERROR_CHECK(nrfx_spim_xfer_dcx(&spiips, &xfer_desc1, NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER,0));

@@ -25,7 +25,7 @@ void ST7789ColorModeSet(uint8_t ColorMode);
 void ST7789MemAccessModeSet(uint8_t Rotation, uint8_t VertMirror, uint8_t HorizMirror, uint8_t IsBGR);
 void ST7789InversionMode(uint8_t Mode);
 static void ST7789RowSet(uint16_t RowStart, uint16_t RowEnd);
-void ST7789RamWrite(uint16_t *_FBuffer, uint16_t Len);
+void ST7789RamWrite(const uint16_t *_FBuffer, uint16_t Len);
 static void ST7789ColumnSet(uint16_t ColumnStart, uint16_t ColumnEnd);
 void ST7789SetWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
 void ST7789FillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);

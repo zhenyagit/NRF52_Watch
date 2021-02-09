@@ -115,6 +115,7 @@
 .\_build\main.o: ..\..\..\..\..\..\modules\nrfx\hal/nrf_spim.h
 .\_build\main.o: ..\..\..\..\..\..\modules\nrfx\drivers\include\nrfx_spi.h
 .\_build\main.o: ..\..\..\..\..\..\modules\nrfx\hal/nrf_spi.h
+.\_build\main.o: .\my_Images\imgs.h
 .\_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\_build\main.o: .\my_Libraries\font.h
@@ -126,4 +127,3 @@
 .\_build\main.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_ctrl_internal.h
 .\_build\main.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_backend_interface.h
 .\_build\main.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_default_backends.h
-.\_build\main.o: .\my_Images\test.h

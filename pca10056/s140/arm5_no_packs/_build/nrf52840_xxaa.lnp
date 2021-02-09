@@ -100,6 +100,7 @@
 ".\_build\pngle.o"
 ".\_build\oledssd1306lib.o"
 ".\_build\st7789lib.o"
+".\_build\imgs.o"
 ".\_build\arm_startup_nrf52840.o"
 ".\_build\system_nrf52840.o"
 --library_type=microlib --strict --scatter ".\_build\nrf52840_xxaa.sct"

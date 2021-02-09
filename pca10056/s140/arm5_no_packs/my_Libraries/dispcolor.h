@@ -9,6 +9,7 @@
 #ifndef _DISPCOLOR_H
 #define _DISPCOLOR_H
 #include "ST7789Lib.h"
+#include "imgs.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -16,7 +17,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include "font.h"
-
 
 #define RGB565(r, g, b)         (((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3))
 
@@ -37,6 +37,7 @@ void dispcolor_FillScreen(uint16_t color);
 void dispcolor_DrawPixel(int16_t X, int16_t Y, uint16_t color);
 void dispcolor_DrawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
 void dispcolor_DrawRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+void dispcolor_DrawBMP(uint8_t x, uint8_t y, const uint8_t * img, uint16_t *ST7789FB);
 // Процедура рисует закрашенный прямоугольник на дисплее
 void dispcolor_DrawRectangleFilled(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t fillcolor);
 // Процедура рисует окружность на дисплее. x0 и y0 - координаты центра окружности
@@ -56,4 +57,6 @@ int16_t dispcolor_printf(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColo
 // Процедура выводит на дисплей форматированную строку. Возвращает ширину строки в пикселях
 int16_t dispcolor_printf_Bg(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColor, uint16_t BgColor, const char *args, ...);
 void  dispcolor_DrawFont(uint8_t x, uint8_t y, uint16_t color, const uint8_t mass[]);
+void dispcolor_DrawFontInBuff(uint8_t x, uint8_t y, uint16_t color,uint8_t number, uint16_t * FrameBuffer);
+
 #endif
