@@ -37,7 +37,7 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 #include "nrfx_spim.h"
-
+#include "CalendarLib.h"
 //#include "test.h"
 
 #include "nrf_drv_spi.h"
@@ -117,10 +117,12 @@ static TimerHandle_t m_battery_timer;                               /**< Definit
 static TimerHandle_t m_heart_rate_timer;                            /**< Definition of heart rate timer. */
 static TimerHandle_t m_rr_interval_timer;                           /**< Definition of RR interval timer. */
 static TimerHandle_t m_sensor_contact_timer;                        /**< Definition of sensor contact detected timer. */
+static TimerHandle_t m_time_update_timer;                        /**< Definition of sensor contact detected timer. */
 
 #if NRF_LOG_ENABLED
 static TaskHandle_t m_logger_thread;                                /**< Definition of Logger thread. */
 #endif
+static TaskHandle_t m_time_update_thread;   
 
 static void advertising_start(void * p_erase_bonds);
 
@@ -288,6 +290,20 @@ static void sensor_contact_detected_timeout_handler(TimerHandle_t xTimer)
  *
  * @details Initializes the timer module. This creates and starts application timers.
  */
+static void time_update_thread(TimerHandle_t xTimer)
+{
+		UNUSED_PARAMETER(xTimer);
+	
+		struct tm * now_time = nrf_cal_get_time_calibrated();
+		memset(ST7789FB, 0, 240*240*2);
+		dispcolor_DrawFontInBuff(20,98, WHITE, now_time->tm_hour/10,ST7789FB);
+		dispcolor_DrawFontInBuff(20+45,98, WHITE, now_time->tm_hour%10,ST7789FB);
+		dispcolor_DrawFontInBuff(240-20-45*2,98, WHITE, now_time->tm_min/10,ST7789FB);
+		dispcolor_DrawFontInBuff(240-20-45,98, WHITE, now_time->tm_min%10,ST7789FB);
+		ST7789FastSendBuffer(ST7789FB,ST7789FB8);		
+		//free(buffer);
+		
+}
 static void timers_init(void)
 {
     // Initialize timer module.
@@ -315,7 +331,11 @@ static void timers_init(void)
                                           pdTRUE,
                                           NULL,
                                           sensor_contact_detected_timeout_handler);
-
+		m_time_update_timer = xTimerCreate("MainTime",
+                                          pdMS_TO_TICKS (1000),
+                                          pdTRUE,
+                                          NULL,
+                                          time_update_thread);
     /* Error checking */
     if ( (NULL == m_battery_timer)
          || (NULL == m_heart_rate_timer)
@@ -489,6 +509,10 @@ static void application_timers_start(void)
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }
     if (pdPASS != xTimerStart(m_sensor_contact_timer, OSTIMER_WAIT_FOR_QUEUE))
+    {
+        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
+    }
+		if (pdPASS != xTimerStart(m_time_update_timer, OSTIMER_WAIT_FOR_QUEUE))
     {
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }
@@ -931,12 +955,14 @@ void set_vol(uint8_t vol)//UICR_REGOUT0_VOUT_3V3
 		}
 	}
 }
+
 int main(void)
 {
     bool erase_bonds;
 		nrf_gpio_cfg_output(PWpin);
 		nrf_gpio_pin_clear(PWpin);
 		nrf_delay_ms(700);
+		
     // Initialize modules.
     log_init();
     clock_init();
@@ -951,7 +977,7 @@ int main(void)
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }
 #endif
-
+		
     // Activate deep sleep mode.
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
@@ -961,6 +987,9 @@ int main(void)
 		//sd_power_dcdc0_mode_set(NRF_POWER_DCDC_ENABLE);
 		//set_vol(UICR_REGOUT0_VOUT_3V3);
     // Initialize modules.
+		nrf_cal_init();
+		nrf_cal_set_time(2021, 2, 10, 7, 30, 0);
+
     timers_init();
     buttons_leds_init(&erase_bonds);
     gap_params_init();
@@ -998,6 +1027,7 @@ int main(void)
 		ST7789FastClearScreen(ST7789FB8);
 		dispcolor_FillScreen(RGB565(255,0,0));
 		nrf_delay_ms(600);
+		/*
 		for (int i=0;i<150;i++)
 		{
 			//dispcolor_DrawBMP(0,0,IMG_flower,ST7789FB); //+6 sec
@@ -1006,8 +1036,7 @@ int main(void)
 			ST7789FastSendBuffer(ST7789FB,ST7789FB8);//6sec
 			
 		}
-		nrf_delay_ms(4000);
-	
+	*/
 		/*	
 		ST7789FastClearScreen(ST7789FB8);
 			dispcolor_FillScreen(RGB565(0,255,0));
@@ -1017,7 +1046,6 @@ int main(void)
 			dispcolor_FillScreen(RGB565(0,0,255));
 			nrf_delay_ms(600);
 			*/
-		nrf_delay_ms(200);
 		//dispcolor_DrawCircle(120, 140, 50, RED);
 		//dispcolor_printf(10, 200, FONTID_16F, RGB565(255, 255, 255), "Watch_M1");
 		//sprintf(buffer,"%d",sizeof(IMG_flower));

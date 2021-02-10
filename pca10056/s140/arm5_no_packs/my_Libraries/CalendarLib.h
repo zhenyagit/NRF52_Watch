@@ -5,10 +5,13 @@
 #include <stdbool.h>
 #include "time.h"
 
-#define CAL_RTC                 NRF_RTC0
-#define CAL_RTC_IRQn            RTC0_IRQn
-#define CAL_RTC_IRQHandler      RTC0_IRQHandler
+#define CAL_RTC                 NRF_RTC2
+#define CAL_RTC_IRQn            RTC2_IRQn
+#define CAL_RTC_IRQHandler      RTC2_IRQHandler
 #define CAL_RTC_IRQ_Priority    3
+
+extern const char * names_mons[12];
+extern const char * names_weekd[7];
 
 // Initializes the calendar library. Run this before calling any other functions. 
 void nrf_cal_init(void);

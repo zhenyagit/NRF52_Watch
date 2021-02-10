@@ -127,3 +127,5 @@
 .\_build\main.o: ..\..\..\..\..\..\components\libraries\log\src\nrf_log_ctrl_internal.h
 .\_build\main.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_backend_interface.h
 .\_build\main.o: ..\..\..\..\..\..\components\libraries\log\nrf_log_default_backends.h
+.\_build\main.o: .\my_Libraries\CalendarLib.h
+.\_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h

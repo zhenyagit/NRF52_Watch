@@ -1508,7 +1508,7 @@
       <GroupNumber>13</GroupNumber>
       <FileNumber>90</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\my_Libraries\CalendarLib.c</PathWithFileName>
@@ -1684,7 +1684,7 @@
       <GroupNumber>14</GroupNumber>
       <FileNumber>104</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\my_Drivers\ST7789Lib.c</PathWithFileName>
@@ -1696,7 +1696,7 @@
 
   <Group>
     <GroupName>my_Images</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

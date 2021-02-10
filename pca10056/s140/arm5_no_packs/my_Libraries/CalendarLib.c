@@ -6,14 +6,37 @@ static time_t m_time, m_last_calibrate_time = 0;
 static float m_calibrate_factor = 0.0f;
 static uint32_t m_rtc_increment = 60;
 static void (*cal_event_callback)(void) = 0;
- 
+const char jan[] = "January";
+const char feb[] = "February";
+const char mar[] = "March";
+const char apr[] = "April ";
+const char may[] = "May";
+const char jun[] = "June";
+const char jul[] = "July";
+const char aug[] = "August";
+const char sep[] = "September";
+const char oct[] = "October";
+const char nov[] = "November";
+const char dec[] = "December";
+const char * names_mons[12] = {jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec};
+
+const char mon[] = "Monday";
+const char tue[] = "Tuesday";
+const char wed[] = "Wednesday";
+const char thu[] = "Thursday";
+const char fri[] = "Friday";
+const char sat[] = "Saturday";
+const char sun[] = "Sunday";
+const char * names_weekd[7] = {mon,tue,wed,thu,fri,sat,sun};
+
+
 void nrf_cal_init(void)
 {
     // Select the 32 kHz crystal and start the 32 kHz clock
-    NRF_CLOCK->LFCLKSRC = CLOCK_LFCLKSRC_SRC_Xtal << CLOCK_LFCLKSRC_SRC_Pos;
-    NRF_CLOCK->EVENTS_LFCLKSTARTED = 0;
-    NRF_CLOCK->TASKS_LFCLKSTART = 1;
-    while(NRF_CLOCK->EVENTS_LFCLKSTARTED == 0);
+    //NRF_CLOCK->LFCLKSRC = CLOCK_LFCLKSRC_SRC_Xtal << CLOCK_LFCLKSRC_SRC_Pos;
+    //NRF_CLOCK->EVENTS_LFCLKSTARTED = 0;
+    //NRF_CLOCK->TASKS_LFCLKSTART = 1;
+    //while(NRF_CLOCK->EVENTS_LFCLKSTARTED == 0);
     
     // Configure the RTC for 1 minute wakeup (default)
     CAL_RTC->PRESCALER = 0xFFF;
